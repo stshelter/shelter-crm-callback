@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>쉘터 CRM 연결</title>
+<style>body{font-family:-apple-system,"Apple SD Gothic Neo",sans-serif;color:#503130;margin:64px auto;max-width:480px;padding:0 16px;line-height:1.6}</style>
+</head>
+<body>
+<p id="msg">카페24 연결을 마무리하는 중입니다. 잠시만 기다려 주세요.</p>
+<script>
+// 카페24 인가 결과를 iMac의 쉘터 CRM으로 넘겨 주는 페이지입니다. 값을 저장하거나 외부로 보내지 않습니다.
+(function () {
+  var target = "http://localhost:8000/cafe24/callback";
+  var allowed = ["code", "state", "error", "error_description"];
+  var src = new URLSearchParams(window.location.search);
+  var out = new URLSearchParams();
+  allowed.forEach(function (k) { if (src.has(k)) out.set(k, src.get(k)); });
+  if (!out.has("state")) {
+    document.getElementById("msg").textContent = "연결 정보가 없습니다. 쉘터 CRM 화면에서 '카페24 연결'을 다시 눌러 주세요.";
+    return;
+  }
+  window.location.replace(target + "?" + out.toString());
+})();
+</script>
+</body>
+</html>
